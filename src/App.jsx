@@ -8,12 +8,13 @@ const Home         = lazy(() => import('./pages/Home'))
 const Events       = lazy(() => import('./pages/Events'))
 const Doubts       = lazy(() => import('./pages/Doubts'))
 const DoubtDetails = lazy(() => import('./pages/DoubtDetails'))
-const Hiring       = lazy(() => import('./pages/Hiring'))
 const Lectures     = lazy(() => import('./pages/Lectures'))
 const Team         = lazy(() => import('./pages/Team'))
 const About        = lazy(() => import('./pages/About'))
 const Preview      = lazy(() => import('./components/ui/StylePreview'))
 const NotFound     = lazy(() => import('./pages/NotFound'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+import AdminRoute from './components/auth/AdminRoute'
 
 // Simple page fallback while a route chunk loads
 function PageFallback() {
@@ -42,10 +43,11 @@ function PageFallback() {
 
 function AppRoutes() {
   const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
 
   return (
     <>
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
 
       <Suspense fallback={<PageFallback />}>
         <Routes>
@@ -53,18 +55,21 @@ function AppRoutes() {
           <Route path="/events"      element={<Events />} />
           <Route path="/doubts"      element={<Doubts />} />
           <Route path="/doubts/:id"  element={<DoubtDetails />} />
-          <Route path="/join"        element={<Hiring />} />
-          <Route path="/hiring"      element={<Hiring />} />
           <Route path="/lectures"    element={<Lectures />} />
           <Route path="/team"        element={<Team />} />
           <Route path="/about"       element={<About />} />
           <Route path="/preview"     element={<Preview />} />
+          <Route path="/admin/*"     element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          } />
           <Route path="*"            element={<NotFound />} />
         </Routes>
       </Suspense>
 
-      {/* Footer appears on all pages */}
-      <Footer />
+      {/* Footer appears on all pages except admin */}
+      {!isAdminRoute && <Footer />}
     </>
   )
 }

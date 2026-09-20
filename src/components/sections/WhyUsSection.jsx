@@ -77,11 +77,11 @@ export function WhyUsSection() {
             </p>
 
             <Link
-              to="/join"
+              to="/events"
               className="event-card__btn event-card__btn--primary"
               style={{ display: 'inline-flex', width: 'auto', padding: '12px 24px' }}
             >
-              Apply to Join Team
+              Explore Our Events
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>

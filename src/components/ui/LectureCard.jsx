@@ -19,12 +19,25 @@ export default function LectureCard({ lecture, className = '' }) {
     description,
     duration,
     youtubeId,
+    videoUrl
   } = lecture
 
   const categoryClass = category?.toLowerCase().replace('/', '-') ?? 'default'
-  const isPlaceholder = !youtubeId || youtubeId.startsWith('placeholder')
-  const youtubeUrl = isPlaceholder ? '#' : `https://www.youtube.com/watch?v=${youtubeId}`
-  const thumbnailUrl = lecture.thumbnail || (isPlaceholder ? null : `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`)
+  const hasLink = Boolean(youtubeId || videoUrl)
+  
+  // Decide the destination link
+  let watchUrl = '#'
+  if (videoUrl) {
+    watchUrl = videoUrl
+  } else if (youtubeId && !youtubeId.startsWith('placeholder')) {
+    watchUrl = `https://www.youtube.com/watch?v=${youtubeId}`
+  }
+
+  // Decide the thumbnail
+  let thumbnailUrl = lecture.thumbnail
+  if (!thumbnailUrl && youtubeId && !youtubeId.startsWith('placeholder')) {
+    thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
+  }
 
   return (
     <article className={`lecture-card ${className}`.trim()}>
@@ -78,11 +91,12 @@ export default function LectureCard({ lecture, className = '' }) {
           </div>
 
           <a
-            href={youtubeUrl}
+            href={watchUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="lecture-card__watch"
-            aria-label={`Watch "${title}" on YouTube`}
+            aria-label={`Watch "${title}"`}
+            style={{ opacity: hasLink ? 1 : 0.5, pointerEvents: hasLink ? 'auto' : 'none' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M8 5v14l11-7z" />

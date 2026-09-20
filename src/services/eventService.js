@@ -1,7 +1,8 @@
-import { EVENTS_DATA } from '../data/events';
+import { getEvents } from './adminService';
 
 export async function fetchEvents({ category = 'All', status = 'All', searchQuery = '' } = {}) {
-  let list = [...EVENTS_DATA];
+  const allEvents = await getEvents();
+  let list = [...allEvents];
 
   if (category && category !== 'All') {
     list = list.filter(evt => evt.category.toLowerCase() === category.toLowerCase());
@@ -25,9 +26,11 @@ export async function fetchEvents({ category = 'All', status = 'All', searchQuer
 }
 
 export async function fetchFeaturedEvents() {
-  return EVENTS_DATA.filter(evt => evt.featured);
+  const allEvents = await getEvents();
+  return allEvents.filter(evt => evt.featured);
 }
 
 export async function fetchEventById(id) {
-  return EVENTS_DATA.find(evt => evt.id === id) || null;
+  const allEvents = await getEvents();
+  return allEvents.find(evt => evt.id === id) || null;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { lectures, lectureCategories } from '../data/lectures'
+import { fetchLectures, lectureCategories } from '../services/lectureService'
 import LectureCard from '../components/ui/LectureCard'
 import SectionHeader from '../components/ui/SectionHeader'
 import { revealOnScroll, killScrollTriggers } from '../animations/gsap.config'
@@ -9,7 +9,20 @@ import './Lectures.css'
 export default function Lectures() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [lectures, setLectures] = useState([])
+  const [loading, setLoading] = useState(true)
   const prefersReducedMotion = useReducedMotion()
+
+  // Load lectures
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true)
+      const data = await fetchLectures()
+      setLectures(data)
+      setLoading(false)
+    }
+    loadData()
+  }, [])
 
   // Filter lectures by category + search
   const filtered = lectures.filter((lecture) => {
@@ -106,7 +119,11 @@ export default function Lectures() {
         </p>
 
         {/* Grid */}
-        {filtered.length > 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-text-muted)' }}>
+            Loading lectures...
+          </div>
+        ) : filtered.length > 0 ? (
           <div className="lectures-grid">
             {filtered.map((lecture) => (
               <LectureCard key={lecture.id} lecture={lecture} />

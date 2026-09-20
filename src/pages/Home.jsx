@@ -12,7 +12,6 @@ import { useReducedMotion } from '../hooks/useReducedMotion'
 import { WhoWeAreSection } from '../components/sections/WhoWeAreSection'
 import { WhyUsSection } from '../components/sections/WhyUsSection'
 import { EventsSection } from '../components/sections/EventsSection'
-import { HiringSection } from '../components/sections/HiringSection'
 import { fetchDoubts } from '../services/doubtService'
 import { DoubtCard } from '../components/ui/DoubtCard'
 import './Home.css'
@@ -128,9 +127,6 @@ export default function Home() {
             <Button href="/doubts" variant="secondary" size="lg">
               Ask a Doubt
             </Button>
-            <Button href="/join" variant="ghost" size="lg">
-              Join / Apply
-            </Button>
           </div>
         </div>
 
@@ -189,9 +185,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── RECRUITMENT SECTION ───────────────────────────────────────── */}
-      <HiringSection />
 
       {/* ── FEATURED LECTURES ────────────────────────────────────────── */}
       <section className="section home-lectures" aria-label="Featured lectures" style={{ padding: 'clamp(36px, 5vw, 56px) 0', position: 'relative', zIndex: 5 }}>
